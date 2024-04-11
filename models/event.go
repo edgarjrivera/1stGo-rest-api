@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// Event is the model for the events
 type Event struct {
 	ID          int
 	Name        string    `binding:"required"`
@@ -13,11 +14,13 @@ type Event struct {
 
 var events = []Event{}
 
+// Save will add the event to the database
 func (e Event) Save() {
 	// later: add it to the database
 	events = append(events, e)
 }
 
+// GetAllEvents will return all the events
 func GetAllEvents() []Event {
 	return events
 }
