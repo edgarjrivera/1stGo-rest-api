@@ -83,3 +83,26 @@ func GetEventById(id int64) (*Event, error) {
 
 	return &event, nil
 }
+
+// Update will update the event in the database
+func (event Event) Update() error {
+	query := `
+	UPDATE events
+	SET name = ?, description = ?, location = ?, dateTime = ?
+	WHERE id = ?
+	`
+
+	// Prepare the query statement to prevent SQL injection attacks and optimize query execution
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query with the event data and the event ID as parameters to update the event in the database.
+	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.ID)
+	return err
+}
