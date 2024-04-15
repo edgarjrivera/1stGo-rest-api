@@ -9,6 +9,7 @@ import (
 
 var DB *sql.DB
 
+// InitDB will initialize the database
 func InitDB() {
 
 	db, err := sql.Open("sqlite", "api.sql")
@@ -26,6 +27,7 @@ func InitDB() {
 	fmt.Println("Tables created successfully!")
 }
 
+// createTables will create the events table in the database
 func createTables() error {
 	createEventsTable := `
         CREATE TABLE IF NOT EXISTS events (
