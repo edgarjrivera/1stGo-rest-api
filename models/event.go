@@ -106,3 +106,22 @@ func (event Event) Update() error {
 	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.ID)
 	return err
 }
+
+// Delete will delete the event from the database
+func (event Event) Delete() error {
+	query := `DELETE FROM events WHERE id = ?`
+
+	// Prepare the query statement to prevent SQL injection attacks and optimize query execution
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	// Close the statement after the function ends
+	defer stmt.Close()
+
+	// Execute the query with the event ID as a parameter to delete the event from the database.
+	_, err = stmt.Exec(event.ID)
+	return err
+}

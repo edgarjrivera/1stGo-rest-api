@@ -1,0 +1,48 @@
+package routes
+
+import (
+	"net/http"
+
+	"example.com/rest-api/models"
+	"github.com/gin-gonic/gin"
+)
+
+func signup(context *gin.Context) {
+	// Get the user from the context
+	var user models.User
+
+	err := context.ShouldBindJSON(&user)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request." + err.Error()})
+		return
+	}
+
+	// Save the user
+	err = user.Save()
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not save user. Try again later."})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"message": "User created successfully."})
+}
+
+func login(context *gin.Context) {
+	var user models.User
+
+	// Parse the JSON
+	err := context.ShouldBindJSON(&user)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request."})
+		return
+	}
+
+	// Validate the credentials
+	err = user.ValidateCredentials()
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Could not authenticate user. Check your credentials."})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "User authenticated."})
+}
