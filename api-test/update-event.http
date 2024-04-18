@@ -1,0 +1,10 @@
+PUT http://localhost:8080/events/3
+content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVkZ2FyajEwQGdtYWlsLmNvbSIsImV4cCI6MTcxMzUzNjA0MSwidXNlcklkIjozfQ.CIkPRFj0Abrh6KAPuPdJS-ykiCQWpI9T-AS3iPH3o9E
+
+{
+    "name": "Event UPDATED",
+    "description" : "A event update call with authentication",
+    "location" : "A test location",
+    "dateTime" : "2024-04-15T11:30:00-04:00"
+}

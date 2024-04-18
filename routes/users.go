@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"example.com/rest-api/models"
+	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,7 +21,7 @@ func signup(context *gin.Context) {
 	// Save the user
 	err = user.Save()
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not save user. Try again later."})
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not save user. Try again later." + err.Error()})
 		return
 	}
 
@@ -44,5 +45,11 @@ func login(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"message": "User authenticated."})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not generate token."})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Login successful.", "token": token})
 }

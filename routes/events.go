@@ -49,9 +49,10 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
+	userId := context.GetInt64("userId")
+
 	// Set the user ID
-	event.ID = 1
-	event.UserId = 1
+	event.UserId = userId
 	event.DateTime = event.DateTime.Local()
 
 	err = event.Save()
@@ -83,7 +84,7 @@ func updateEvent(context *gin.Context) {
 	err = context.ShouldBindJSON(&updatedEvent)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data"})
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data" + err.Error()})
 		return
 	}
 
