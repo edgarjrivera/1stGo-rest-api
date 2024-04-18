@@ -16,9 +16,11 @@ func RegisterRoutes(server *gin.Engine) {
 	// Group of routes that are authenticated using the Authenticate middleware function.
 	authenticated := server.Group("/") // This will create a group of routes that are authenticated
 	authenticated.Use(middlewares.Authenticate)
-	authenticated.POST("/events", createEvent)       // POST request to create an event
-	authenticated.PUT("/events/:id", updateEvent)    // PUT request to update an event
-	authenticated.DELETE("/events/:id", deleteEvent) // DELETE request to delete an event
+	authenticated.POST("/events", createEvent)                   // POST request to create an event
+	authenticated.PUT("/events/:id", updateEvent)                // PUT request to update an event
+	authenticated.DELETE("/events/:id", deleteEvent)             // DELETE request to delete an event
+	authenticated.POST("/events/:id/register", registerForEvent) // POST request to register for an event
+	authenticated.DELETE("/events/:id/register", cancelRegistration)
 
 	server.POST("/signup", signup) // POST request to create a user
 	server.POST("/login", login)   // POST request to login a user

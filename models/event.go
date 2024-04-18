@@ -9,10 +9,10 @@ import (
 // Event is the model for the events
 type Event struct {
 	ID          int64
-	Name        string    `binding:"required"`
-	Description string    `binding:"required"`
-	Location    string    `binding:"required"`
-	DateTime    time.Time `binding:"required"`
+	Name        string `binding:"required"`
+	Description string `binding:"required"`
+	Location    string `binding:"required"`
+	DateTime    time.Time
 	UserId      int64
 }
 
@@ -123,5 +123,34 @@ func (event Event) Delete() error {
 
 	// Execute the query with the event ID as a parameter to delete the event from the database.
 	_, err = stmt.Exec(event.ID)
+	return err
+}
+
+func (e Event) Register(userId int64) error {
+	query := "INSERT INTO registrations(event_id, user_id) VALUES(?, ?)"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		panic(err)
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+
+	return err
+}
+
+func (e Event) CancelRegistration(userId int64) error {
+
+	query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		panic(err)
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+
 	return err
 }

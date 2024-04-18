@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"example.com/rest-api/models"
 	"github.com/gin-gonic/gin"
@@ -53,7 +54,7 @@ func createEvent(context *gin.Context) {
 
 	// Set the user ID
 	event.UserId = userId
-	event.DateTime = event.DateTime.Local()
+	event.DateTime = time.Now().Local()
 
 	err = event.Save()
 
@@ -73,10 +74,16 @@ func updateEvent(context *gin.Context) {
 		return
 	}
 
-	_, err = models.GetEventById(eventId)
+	userId := context.GetInt64("userId")
+	event, err := models.GetEventById(eventId)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event. Try again later."})
+		return
+	}
+
+	if event.UserId != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "You are not authorized to update this event."})
 		return
 	}
 
@@ -107,9 +114,15 @@ func deleteEvent(context *gin.Context) {
 		return
 	}
 
+	userId := context.GetInt64("userId")
 	event, err := models.GetEventById(eventId)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event. Try again later."})
+		return
+	}
+
+	if event.UserId != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "You are not authorized to delete this event."})
 		return
 	}
 
