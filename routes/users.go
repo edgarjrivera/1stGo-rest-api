@@ -28,6 +28,7 @@ func signup(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "User created successfully."})
 }
 
+// This function will log in a user
 func login(context *gin.Context) {
 	var user models.User
 

@@ -13,6 +13,7 @@ type User struct {
 	Password string `binding:"required"`
 }
 
+// Save will save the user to the database
 func (u User) Save() error {
 	// Save the user to the database
 	query := "INSERT INTO users (email, password) VALUES (?, ?)"
@@ -42,6 +43,7 @@ func (u User) Save() error {
 	return err
 }
 
+// ValidateCredentials will validate the user credentials
 func (u *User) ValidateCredentials() error {
 	// Validate the user credentials
 	query := "SELECT id, password FROM users WHERE email = ?"

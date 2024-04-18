@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Here we define the handlers for the routes
 func registerForEvent(context *gin.Context) {
 	userId := context.GetInt64("userId")
 	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
@@ -31,6 +32,7 @@ func registerForEvent(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "Registration successful."})
 }
 
+// This function will cancel the registration for an event
 func cancelRegistration(context *gin.Context) {
 	userId := context.GetInt64("userId")
 	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
