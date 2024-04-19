@@ -27,7 +27,7 @@ func InitDB() {
 // createTables will create the events table in the database
 func createTables() {
 	// Create the users table
-	fmt.Println("Starting to create users table...")
+	fmt.Println("Starting to create Users table...")
 	createUsersTable := `
 		CREATE TABLE IF NOT EXISTS users (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,13 +38,13 @@ func createTables() {
 
 	_, err := DB.Exec(createUsersTable)
 	if err != nil {
-		panic("Could not create users table: " + err.Error())
+		panic("Could not create Users table: " + err.Error())
 	}
 
 	fmt.Println("Users table created successfully!")
 
 	// Create the events table
-	fmt.Println("Starting to create events table...")
+	fmt.Println("Starting to create Events table...")
 	createEventsTable := `
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +64,7 @@ func createTables() {
 	fmt.Println("Events table created successfully!")
 
 	// Create the registrations table
-	fmt.Println("Starting to create registrations table...")
+	fmt.Println("Starting to create Registrations table...")
 	createRegistrationsTable := `
 	CREATE TABLE IF NOT EXISTS registrations (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
