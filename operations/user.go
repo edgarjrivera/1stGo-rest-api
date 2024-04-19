@@ -1,4 +1,4 @@
-package models
+package operations
 
 import (
 	"errors"
@@ -7,11 +7,8 @@ import (
 	"example.com/rest-api/utils"
 )
 
-type User struct {
-	ID       int64
-	Email    string `binding:"required"`
-	Password string `binding:"required"`
-}
+// User represents a user in the database
+type User db.User
 
 // Save will save the user to the database
 func (u User) Save() error {

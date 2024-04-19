@@ -3,14 +3,14 @@ package routes
 import (
 	"net/http"
 
-	"example.com/rest-api/models"
+	"example.com/rest-api/operations"
 	"example.com/rest-api/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func signup(context *gin.Context) {
 	// Get the user from the context
-	var user models.User
+	var user operations.User
 
 	err := context.ShouldBindJSON(&user)
 	if err != nil {
@@ -30,7 +30,7 @@ func signup(context *gin.Context) {
 
 // This function will log in a user
 func login(context *gin.Context) {
-	var user models.User
+	var user operations.User
 
 	// Parse the JSON
 	err := context.ShouldBindJSON(&user)

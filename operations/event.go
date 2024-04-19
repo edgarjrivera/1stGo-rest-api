@@ -1,22 +1,11 @@
-package models
+package operations // import "example.com/rest-api/operations"
 
 import (
-	"time"
-
 	"example.com/rest-api/db"
 )
 
-// Event is the model for the events
-type Event struct {
-	ID          int64
-	Name        string `binding:"required"`
-	Description string `binding:"required"`
-	Location    string `binding:"required"`
-	DateTime    time.Time
-	UserId      int64
-}
-
-var events = []Event{}
+// Event represents an event in the database
+type Event db.Event
 
 // Save will add the event to the database
 func (e *Event) Save() error {
@@ -32,7 +21,7 @@ func (e *Event) Save() error {
 	defer stmt.Close()
 
 	// Execute the query
-	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserId)
+	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.UserID)
 	if err != nil {
 		return err
 	}
@@ -59,7 +48,7 @@ func GetAllEvents() ([]Event, error) {
 	for rows.Next() {
 		var event Event
 		//Pass each column pointer in the order of the columns in the table
-		err := rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserId)
+		err := rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
 
 		if err != nil {
 			return nil, err
@@ -76,7 +65,7 @@ func GetEventById(id int64) (*Event, error) {
 	row := db.DB.QueryRow(query, id)
 
 	var event Event
-	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserId)
+	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
 	if err != nil {
 		return nil, err
 	}

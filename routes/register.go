@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"example.com/rest-api/models"
+	"example.com/rest-api/operations"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +17,7 @@ func registerForEvent(context *gin.Context) {
 		return
 	}
 
-	event, err := models.GetEventById(eventId)
+	event, err := operations.GetEventById(eventId)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event. Try again later."})
 		return
@@ -37,7 +37,7 @@ func cancelRegistration(context *gin.Context) {
 	userId := context.GetInt64("userId")
 	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
 
-	var event models.Event
+	var event operations.Event
 	event.ID = eventId
 
 	err = event.CancelRegistration(userId)
